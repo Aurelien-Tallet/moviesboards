@@ -5,9 +5,9 @@ import {
   Redirect
 } from "react-router-dom";
 import Movies from './pages/Movies/Movies.js'
-import SingleMovie from './pages/SingleMovie/SingleMovie.js'
 import AddMovie from './pages/AddMovie/AddMovie.js'
 import './App.scss';
+import DetailMovie from "components/DetailMovie/DetailMovie.js";
 
 function App() {
   return (<Router>
@@ -20,8 +20,8 @@ function App() {
         <Route exact path="/movies">
           <Movies />
         </Route>
-        <Route path="/movie/:id">
-          <SingleMovie />
+        <Route path="/movies/:id">
+          <DetailMovie />
         </Route>
         <Route exact path="/addmovie">
           <AddMovie />

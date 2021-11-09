@@ -1,0 +1,11 @@
+.movies {
+    color: var(--primary-white);
+    background: var(--primary-black);
+    font-family: "Reem Kufi", sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
