@@ -1,8 +1,8 @@
 import React from 'react'
 import './SingleMovie.scss'
 
-function SingleMovie({ film, deleteFilm}) {
-    const { title, poster, description, release_date: date, id, categories } = film
+function SingleMovie({ movie, deleteFilm}) {
+    const { title, poster, description, release_date: date, id, categories } = movie
     return (
         <article className="singlemovie">
             <img className="singlemovie__poster" src={poster} alt="" />

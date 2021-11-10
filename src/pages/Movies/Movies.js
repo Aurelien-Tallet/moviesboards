@@ -19,8 +19,8 @@ function Movies() {
     }, [])
     return (
         <section className="movies">
-            <ul >
-                {movies.map((film) => <SingleMovie film={film} key={film.id} deleteFilm={deleteFilm} />)}
+            <ul className="movies__list">
+                {movies.map((movie) => <SingleMovie movie={movie} key={movie.id} deleteFilm={deleteFilm} />)}
             </ul>
         </section>
     )

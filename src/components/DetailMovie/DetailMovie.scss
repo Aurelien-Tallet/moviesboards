@@ -1,0 +1,131 @@
+body {
+    background: var(--primary-black);
+    color: var(--primary-white);
+}
+.movie-wrapper {
+    position: relative;
+    .similar-movies {
+        scrollbar-width: none; /* For Firefox */
+        -ms-overflow-style: none; /* For Internet Explorer and Edge */
+
+        &::-webkit-scrollbar {
+            width: 0px; /* For Chrome, Safari, and Opera */
+        }
+        display: flex;
+        gap: 15px;
+        overflow-x: scroll;
+        .film {
+            width: 100px;
+            &__picture {
+            }
+        }
+    }
+    .actors {
+        display: flex;
+        flex-wrap: wrap;
+        // align-items: center;
+        // justify-content: center;
+        gap: 10px;
+        .actor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+            &__picture {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+            &__name {
+                font-family: "Reem Kufi", sans-serif;
+                font-size: 14px;
+                line-height: 1.5;
+                text-align: center;
+            }
+            &__character {
+                font-size: 12px;
+                text-align: center;
+                line-height: 1.4;
+                font-family: "Montserrat", sans-serif;
+                color: rgb(150, 150, 150);
+            }
+        }
+    }
+    &__content {
+        &__infos {
+            font-family: "Reem Kufi", sans-serif;
+            padding: 10px 20px;
+            &__title {
+                font-family: inherit;
+                font-size: clamp(22px, 1.5vw, 26px);
+                line-height: 1.5;
+                padding-bottom: 10px;
+            }
+            &__summary {
+                font-size: 16px;
+                line-height: 1.4;
+                font-family: "Montserrat", sans-serif;
+                color: rgb(150, 150, 150);
+            }
+        }
+        &__poster {
+            width: 100vw;
+            position: relative;
+            &:after {
+                content: "";
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(transparent, var(--primary-black));
+                display: block;
+                position: absolute;
+                inset: 0;
+            }
+            img {
+                background-blend-mode: overlay;
+                position: relative;
+                width: 100vw;
+                object-fit: cover;
+                max-height: 500px;
+            }
+        }
+        &__texts {
+            font-family: "Reem Kufi", sans-serif;
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+        &__title {
+            font-family: inherit;
+            text-align: center;
+            font-size: clamp(26px, 2vw, 30px);
+            line-height: 1.5;
+        }
+        &__desc {
+            font-size: 14px;
+            line-height: 1.5;
+            font-family: inherit;
+            word-spacing: 3px;
+            text-align: center;
+            color: rgb(150, 150, 150);
+            span {
+                font-size: 20px;
+                line-height: 30px;
+            }
+        }
+    }
+    &__back {
+        width: fit-content;
+        border: none;
+        text-decoration: none;
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        color: inherit;
+        line-height: 1;
+        font-size: 20px;
+        z-index: 99999;
+    }
+}

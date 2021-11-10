@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('icomoon.eot?ivkybd');
-  src:  url('icomoon.eot?ivkybd#iefix') format('embedded-opentype'),
-    url('icomoon.ttf?ivkybd') format('truetype'),
-    url('icomoon.woff?ivkybd') format('woff'),
-    url('icomoon.svg?ivkybd#icomoon') format('svg');
+  src:  url('icomoon.eot?8x25wm');
+  src:  url('icomoon.eot?8x25wm#iefix') format('embedded-opentype'),
+    url('icomoon.ttf?8x25wm') format('truetype'),
+    url('icomoon.woff?8x25wm') format('woff'),
+    url('icomoon.svg?8x25wm#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -30,4 +30,7 @@
 }
 .icon-delete:before {
   content: "\e9ad";
+}
+.icon-arrow-left2:before {
+  content: "\ea40";
 }
