@@ -12,10 +12,10 @@ body {
             width: 0px; /* For Chrome, Safari, and Opera */
         }
         display: flex;
-        gap: 15px;
+        gap: 30px;
         overflow-x: scroll;
         .film {
-            width: 100px;
+            min-width: 100px;
             &__picture {
             }
         }

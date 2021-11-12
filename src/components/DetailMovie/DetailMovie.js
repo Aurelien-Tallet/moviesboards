@@ -5,18 +5,20 @@ import Crud from 'services/crud'
 import './DetailMovie.scss'
 
 function DetailMovie() {
-    const [movie, setMovie] = useState(null)
-
+    const [movie, setMovie] = useState(false)
+    const [loading, setLoading] = useState(false)
     const id = useParams().id
     useEffect(() => {
         (async () => {
             const res = await Crud.get(`http://localhost:4000/movies/${id}`)
             setMovie(res)
+            setLoading(true)
         })()
+
     }, [id])
     return (
         <section>
-            {(movie?.title) ? <div className="movie-wrapper" >
+            {movie && <div className="movie-wrapper" >
                 <Link to="/movies" className="movie-wrapper__back"><span className="icon-arrow-left2"></span></Link>
                 <div className="movie-wrapper__content"  >
                     <div className="movie-wrapper__content__poster">
@@ -51,7 +53,8 @@ function DetailMovie() {
                         </ul>
                     </div>
                 </div>
-            </div> : <p>Ce film n'est pas présent dans ta collection</p>}
+            </div>}
+            {(!movie && loading) && <p>Ce film n'éxiste pas</p>}
         </section>
     )
 }
