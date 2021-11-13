@@ -1,5 +1,38 @@
 .add {
     padding: 20px;
+    .search {
+        position: relative;
+        padding: 0;
+        .text {
+            &.active {
+                border-bottom: none;
+            }
+        }
+        .result {
+            &.active {
+                border: rgb(255, 251, 0) 1px solid;
+                border-top: none;
+                p {
+                    padding: 5px 10px;
+                    font-family: var(--t-montserrat);
+                    font-size: 14px;
+                    transition: all cubic-bezier(0.39, 0.575, 0.565, 1) 0.3s;
+                    &:hover {
+                        color : var(--grey);
+                        transition: all cubic-bezier(0.39, 0.575, 0.565, 1) 0.3s;
+                    }
+                }
+            }
+            top: 100%;
+            left: 0;
+            position: absolute;
+            background-color: var(--primary-black);
+            right: 0;
+            max-width: 500px;
+            min-width: 280px;
+            width: 60%;
+        }
+    }
     &__title {
         font-family: var(--t-rk);
         color: var(--light-grey);
@@ -8,6 +41,7 @@
         text-transform: uppercase;
         font-family: var(--t-montserrat);
     }
+
     .actors {
         display: flex;
         flex-wrap: wrap;
@@ -18,7 +52,7 @@
             flex-direction: column;
             button {
                 margin: 20px 0;
-                background:rgb(255, 251, 0);
+                background: rgb(255, 251, 0);
                 border: none;
                 color: var(--primary-black);
                 height: 40px;
@@ -91,7 +125,7 @@
             font-family: var(--t-montserrat);
             font-size: clamp(22px, 1.5vw, 26px);
             line-height: 2.5;
-            color : var(--light-grey)
+            color: var(--light-grey);
         }
     }
 }

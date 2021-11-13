@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useRef, useState } from 'react'
 import { useEffect } from 'react/cjs/react.development'
 import Crud from 'services/crud'
 import { DEFAULT_MOVIE } from 'services/model'
@@ -9,30 +9,46 @@ function AddMovie() {
     const [result, setResult] = useState([])
     const [search, setSearch] = useState('')
     const [actor, setActor] = useState({ name: '', photo: '', character: '' })
-    const [similarMovie, setSimilarMovie] = useState({ title: '', release_date: '', poster: '' })
+    const [similarMovie, setSimilarMovie] = useState({})
     const [categories, setCategories] = useState('')
     const handleChange = (e) => {
         e.preventDefault()
         const { name, value } = e.target
         setNewMovie({ ...movie, [name]: value })
     }
-    let timeout = null
+
     const handleChangeSearch = (e) => {
         e.preventDefault()
         const { value } = e.target
         setSearch(value)
-
     }
+    const chooseFilm = async (e, film) => {
+        e.preventDefault()
+        const imageBaseURL = 'https://image.tmdb.org/t/p/original/'
+        let URL = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${'4f85342b8749c4d0e6c0f36d0481cbea'}`
+        const res = await Crud.get(URL)
+        const  { title , release_date , overview : description, genres } = res
+        const categories = genres.map(k => k.name)
+        console.log(res)
+        // setNewMovie({title, release_date, description, categories : categories, })
+    }
+
     const displayResults = async () => {
-        const res = await Crud.get(`https://api.themoviedb.org/3/search/movie?api_key=4f85342b8749c4d0e6c0f36d0481cbea&query=${search}`)
+        if (search.length < 3) {
+            setResult([])
+            return
+        }
+        const res = await Crud.get(`https://api.themoviedb.org/3/search/movie?api_key=4f85342b8749c4d0e6c0f36d0481cbea&query=${search}&language=fr-FR`)
         if (res.results !== undefined) { setResult(res.results) }
         else {
             setResult([])
         }
     }
+    const input = useRef()
+    let timeout = null
     const searchDebounce = (e) => {
+        e.preventDefault()
         clearTimeout(timeout);
-
         timeout = setTimeout(function () {
             displayResults()
         }, 500);
@@ -72,26 +88,26 @@ function AddMovie() {
 
     }
     useEffect(() => {
-    }, [])
+    }, [movie])
     return (
-        <section className="add">
+        <section className="add" onClick={() => setResult([])}>
             <h1 className="add__title">Ajouter un film</h1>
-            <div className="add__form__block">
-                <input type="text" name="title" id="title" className="text" onChange={handleChangeSearch} onKeyUp={searchDebounce} required />
-                <div className="result">{result.map(e => <p>{e.title}</p>)}</div>
+            <div className="add__form__block search">
+                <input type="text" name="title" ref={input} autoComplete="off" id="title" className={`text ${result.length > 0 ? 'active' : ''}`} onChange={handleChangeSearch} onKeyUp={searchDebounce} required />
+                <div className={`result ${result.length > 0 ? 'active' : ''}`}>{result.map(film => <p onClick={(e) => chooseFilm(e, film)} key={film.id}>{film.title}</p>)}</div>
             </div>
             <form onSubmit={handleSubmit} className="add__form">
                 <div className="title add__form__block">
                     <label htmlFor="title" className="add__form__label">Titre :</label>
-                    <input type="text" name="title" id="title" className="text" onChange={handleChange} required />
+                    <input type="text" name="title" id="title" className="text" onChange={handleChange} value={movie.title} required />
                 </div>
                 <div className="add__form__block">
                     <label htmlFor="description" className="add__form__label">Description :</label>
-                    <textarea type="text" name="description" id="description" onChange={handleChange} required rows="5" ></textarea>
+                    <textarea type="text" name="description" id="description" onChange={handleChange} required rows="5" value={movie.description} ></textarea>
                 </div>
                 <div className="add__form__block">
                     <label htmlFor="categories" className="add__form__label">Catégories :</label>
-                    <input type="text" name="categories" id="categories" onChange={handleChangeCategories} required />
+                    <input type="text" name="categories" id="categories" onChange={handleChangeCategories} value={categories} required />
                     <button name="categories" onClick={addCategories}>+</button>
                     <p className="catégories">{movie.categories.join(' , ')}</p>
                 </div>
