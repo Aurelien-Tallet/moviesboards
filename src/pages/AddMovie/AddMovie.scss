@@ -1,5 +1,19 @@
 .add {
     padding: 20px;
+    .similar-movies {
+        scrollbar-width: none; /* For Firefox */
+        -ms-overflow-style: none; /* For Internet Explorer and Edge */
+
+        &::-webkit-scrollbar {
+            width: 0px; /* For Chrome, Safari, and Opera */
+        }
+        display: flex;
+        gap: 30px;
+        overflow-x: scroll;
+        .film {
+            min-width: 100px;
+        }
+        }
     .search {
         position: relative;
         padding: 0;
@@ -105,7 +119,7 @@
                 border: 1px double var(--grey);
                 width: fit-content;
             }
-            input[type="text"],
+            input[type="text"],input[type="url"],
             textarea {
                 font-size: 14px;
                 color: var(--grey);

@@ -8,9 +8,54 @@ function DetailMovie() {
     const [movie, setMovie] = useState(false)
     const [loading, setLoading] = useState(false)
     const id = useParams().id
+    const slider = document.querySelector('.similar-movies')
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    const pointerDown = e => {
+        e.preventDefault()
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    }
+    const pointerLeave = () => {
+        isDown = false;
+        slider.classList.remove('active');
+    }
+    const pointerUp = () => {
+        isDown = false;
+        slider.classList.remove('active');
+    }
+    const pointerMove = (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2
+        slider.scrollLeft = scrollLeft - walk;
+        console.log(walk);
+    }
+    useEffect(() => {
+        if (slider) {
+            slider.addEventListener('pointerdown', pointerDown)
+            slider.addEventListener('pointerleave', () => pointerLeave);
+            slider.addEventListener('pointerup', pointerUp);
+            slider.addEventListener('pointermove', pointerMove);
+        }
+        return () => {
+            if (slider) {
+                slider.removeEventListener('pointerdown', pointerDown)
+                slider.removeEventListener('pointerleave', () => pointerLeave);
+                slider.removeEventListener('pointerup', pointerUp);
+                slider.removeEventListener('pointermove', pointerMove);
+            }
+
+        }
+    }, [slider])
+
     useEffect(() => {
         (async () => {
-            const res = await Crud.get(`http://localhost:4000/movies/${id}`)
+            const res = await Crud.get(`http://192.168.1.58:4000/movies/${id}`)
             setMovie(res)
             setLoading(true)
         })()

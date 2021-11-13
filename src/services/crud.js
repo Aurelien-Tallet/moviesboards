@@ -11,16 +11,16 @@ class Crud {
         }
     }
     static delete = (id) => {
-        fetch('http://localhost:4000/movies/' + id, {
+        fetch('http://192.168.1.58:4000/movies/' + id, {
             method: 'DELETE',
         })
             .then(res => res.json()).catch((err) => console.log(err))
             .then(res => console.log(res))
     }
-    static post = (data) => {
+    static post = async (data) => {
         const movie = JSON.stringify(data)
         console.log(data)
-        fetch('http://localhost:4000/movies/', {
+       return await fetch('http://192.168.1.58:4000/movies/', {
             method: 'POST',
             body: movie,
             headers: {
@@ -28,6 +28,20 @@ class Crud {
                 'Content-Type': 'application/json',
             }
         })
+    }
+    static put = (id, data) => {
+        delete data.id
+        const movie = JSON.stringify(data)
+        fetch('http://192.168.1.58:4000/movies/' + id, {
+            method: 'PUT',
+            body: movie,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => res.json()).catch((err) => console.log(err))
+            .then(res => console.log(res))
     }
 }
 export default Crud

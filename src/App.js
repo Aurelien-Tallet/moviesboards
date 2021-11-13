@@ -26,6 +26,9 @@ function App() {
         <Route exact path="/add">
           <AddMovie />
         </Route>
+        <Route exact path="/edit/:id">
+          <AddMovie edit={true} />
+        </Route>
       </Switch>
     </div>
   </Router>

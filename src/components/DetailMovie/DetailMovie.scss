@@ -2,12 +2,19 @@ body {
     background: var(--primary-black);
     color: var(--primary-white);
 }
+
 .movie-wrapper {
     position: relative;
     .similar-movies {
         scrollbar-width: none; /* For Firefox */
         -ms-overflow-style: none; /* For Internet Explorer and Edge */
-
+        cursor: grab;
+        &.active {
+            cursor: grabbing;
+            .film {
+                transition: all 0.2s;
+            }
+        }
         &::-webkit-scrollbar {
             width: 0px; /* For Chrome, Safari, and Opera */
         }
@@ -15,6 +22,7 @@ body {
         gap: 30px;
         overflow-x: scroll;
         .film {
+            transition: all 0.2s;
             min-width: 100px;
             &__picture {
             }
