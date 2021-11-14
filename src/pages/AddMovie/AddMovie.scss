@@ -120,6 +120,7 @@
         -ms-overflow-style: none; /* For Internet Explorer and Edge */
         cursor: grab;
         overflow-x: scroll;
+        padding: 0 20px;
         &.active {
             cursor: grabbing;
             .film {
@@ -136,7 +137,7 @@
             min-width: 170px;
             font-size: 16px;
             &__date {
-                color:rgb(150, 150, 150);
+                color: rgb(150, 150, 150);
                 font-size: 14px;
                 font-family: var(--t-rk);
                 text-align: center;
