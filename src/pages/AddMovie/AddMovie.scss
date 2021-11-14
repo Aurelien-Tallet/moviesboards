@@ -2,11 +2,50 @@
     .wrapper {
         display: flex;
     }
+    &__back {
+        width: fit-content;
+        border: none;
+        text-decoration: none;
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        color: inherit;
+        line-height: 1;
+        font-size: 20px;
+        z-index: 99999;
+        mix-blend-mode: difference;
+    }
+    .submit {
+        background: rgb(255, 251, 0);
+        border: none;
+        color: var(--primary-black);
+        height: 40px;
+        max-width: 150px;
+        width: 150px;
+        font-family: var(--t-rk);
+        margin: 20px auto;
+        display: block;
+    }
+    .autoComplete {
+        position: relative;
+    }
     .categories {
         color: rgb(150, 150, 150);
         text-transform: capitalize;
         line-height: 2;
+        &-add {
+            outline: 0;
+            border: none;
+            margin: 0 3px;
+            color: var(--primary-black);
+            width: 40px;
+            height: 40px;
+            background: rgb(255, 251, 0);
+            font-size: 14px;
+            line-height: 0.5;
+        }
     }
+
     .ou {
         font-family: var(--t-rk);
         color: var(--light-grey);
@@ -14,6 +53,10 @@
         line-height: 3;
         text-align: center;
         text-transform: uppercase;
+        @media (max-width: 599px) {
+            line-height: 3;
+            font-size: 40px;
+        }
     }
     .tmdb {
         font-size: 24px;
@@ -22,6 +65,11 @@
         color: var(--light-grey);
         padding: 20px;
         line-height: 3;
+        @media (max-width: 599px) {
+            line-height: 2;
+            font-size: 16px;
+            word-spacing: 3px;
+        }
     }
     .movie-banner {
         position: relative;
@@ -67,25 +115,53 @@
             border-radius: 0.25em;
         }
     }
-
     .similar-movies {
         scrollbar-width: none; /* For Firefox */
         -ms-overflow-style: none; /* For Internet Explorer and Edge */
-
+        cursor: grab;
+        overflow-x: scroll;
+        &.active {
+            cursor: grabbing;
+            .film {
+                transition: all 0.2s;
+            }
+        }
         &::-webkit-scrollbar {
             width: 0px; /* For Chrome, Safari, and Opera */
         }
         display: flex;
         gap: 30px;
-        overflow-x: scroll;
         .film {
-            min-width: 100px;
+            transition: all 0.2s;
+            min-width: 170px;
+            font-size: 16px;
+            &__date {
+                color:rgb(150, 150, 150);
+                font-size: 14px;
+                font-family: var(--t-rk);
+                text-align: center;
+            }
+            &__name {
+                text-align: center;
+                width: 100%;
+                font-size: 16px;
+                font-family: var(--t-montserrat);
+                text-align: center;
+            }
+            &__delete {
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                background: transparent;
+                outline: 0;
+                border: 0;
+                color: var(--light-grey);
+            }
         }
     }
-    .search {
-        position: relative;
-        padding: 0;
 
+    .search {
         .text {
             &.active {
                 border-bottom: none;
@@ -113,9 +189,6 @@
             position: absolute;
             background-color: var(--primary-black);
             right: 0;
-            max-width: 500px;
-            min-width: 280px;
-            width: 60%;
         }
     }
     &__title {
@@ -131,10 +204,10 @@
         display: flex;
         flex-wrap: wrap;
         padding: 10px;
-
+        justify-content: center;
         &__form {
-            display: flex;
             flex-direction: column;
+            display: flex;
             button {
                 margin: 20px 0;
                 background: rgb(255, 251, 0);
@@ -151,11 +224,21 @@
             flex-direction: column;
             align-items: center;
             width: 100px;
+            position: relative;
             &__picture {
                 width: 60px;
                 height: 60px;
                 object-fit: cover;
                 border-radius: 50%;
+            }
+            &__delete {
+                position: absolute;
+                top: -10%;
+                right: 0;
+                background: transparent;
+                outline: 0;
+                border: 0;
+                color: var(--light-grey);
             }
             &__name {
                 font-family: "Reem Kufi", sans-serif;
@@ -174,7 +257,7 @@
     }
     &__form {
         &__block {
-            padding: 20px 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             font-family: var(--t-montserrat);

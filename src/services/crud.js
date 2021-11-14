@@ -20,7 +20,7 @@ class Crud {
     static post = async (data) => {
         const movie = JSON.stringify(data)
         console.log(data)
-       return await fetch('http://192.168.1.58:4000/movies/', {
+        return await fetch('http://192.168.1.58:4000/movies/', {
             method: 'POST',
             body: movie,
             headers: {

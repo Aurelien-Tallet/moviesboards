@@ -2,6 +2,15 @@
     .movie-banner {
         position: relative;
         min-height: 400px;
+        .nav {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            z-index: 99999;
+            .icon-plus:hover {
+                color: var(--grey);
+            }
+        }
         .bg {
             position: absolute;
             inset: 0;
@@ -18,6 +27,11 @@
             right: 0;
             font-size: 60px;
             font-family: var(--t-rk);
+            @media (max-width: 599px) {
+                font-size: 30px;
+                text-align: center;
+                left: 0;
+            }
         }
         &:after {
             content: "";
@@ -39,17 +53,31 @@
             justify-content: center;
             padding: 20px;
             transform: translateY(50%);
-
+            @media (max-width: 599px) {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 20px;
+                gap: 10px;
+                max-height: 200px;
+                transform: translateY(0);
+            }
             &__block {
                 padding: 20px 0;
                 display: flex;
                 flex-direction: column;
                 width: min-content;
                 font-family: var(--t-montserrat);
+                @media (max-width: 599px) {
+                    padding: 0;
+                }
                 label {
                     font-size: 16px;
                     margin: 5px 0;
                     width: fit-content;
+                    @media (max-width: 599px) {
+                        font-size: 14px;
+                        margin: 3px 0;
+                    }
                 }
                 .input {
                     padding: 0 1em;
@@ -63,6 +91,9 @@
                     outline: 0;
                     box-shadow: none;
                     border-radius: 0.25em;
+                    @media (max-width: 599px) {
+                        height: 30px;
+                    }
                 }
             }
         }
@@ -71,6 +102,7 @@
         color: var(--primary-white);
         font-family: "Reem Kufi", sans-serif;
         padding: 50px 20px;
+      
         &__list {
             display: flex;
             flex-wrap: wrap;
@@ -79,14 +111,12 @@
 }
 
 body {
-    background: var(--grey);
+    background: var(--primary-black);
 }
 select {
-    /* Reset Select */
     appearance: none;
     outline: 0;
     box-shadow: none;
-    /* Personalize */
     flex: 1;
     padding: 0 1em;
     color: #fff;
@@ -95,24 +125,24 @@ select {
     background-image: none;
     cursor: pointer;
     option {
+    
         &:hover {
             background-color: var(--grey);
         }
     }
 }
-select:focus > option:checked { 
+select:focus > option:checked {
     background: var(--grey) !important;
 }
 
 select:focus {
     outline: 0;
 }
-/* Remove IE arrow */
+
 select::-ms-expand {
     display: none;
 }
 
-/* Custom Select wrapper */
 .select {
     position: relative;
     display: flex;
@@ -122,8 +152,12 @@ select::-ms-expand {
     height: 40px;
     border-radius: 0.25em;
     overflow: hidden;
+    @media (max-width: 599px) {
+        height: 30px;
+        font-size: 14px;
+    }
 }
-/* Arrow */
+
 .select::after {
     content: "\25BC";
     position: absolute;
@@ -135,5 +169,7 @@ select::-ms-expand {
     border-left: 1px solid white;
     transition: 0.25s all ease;
     pointer-events: none;
+    @media (max-width: 599px) {
+        line-height: 0;
+    }
 }
-/* Transition */

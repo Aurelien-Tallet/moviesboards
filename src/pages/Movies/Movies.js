@@ -4,15 +4,29 @@ import SingleMovie from '../../components/SingleMovie/SingleMovie';
 
 import './Movies.scss'
 import { containCategories, containDate, containTitle, filterArray } from 'services/utils.js';
-
+import Modal from 'components/Modal/Modal.js';
+import { Link } from 'react-router-dom';
+const POSTER_URL =
+    "https://firebasestorage.googleapis.com/v0/b/my-movies-list-23f59.appspot.com/o/images%2Fdefault-placeholder.png?alt=media&token=c6082f11-8efe-42cc-b43d-c7b23b75f9b0";
 function Movies() {
     const [movies, setMovies] = useState([])
     const [moviesList, setMoviesList] = useState([])
     const [categories, setCategories] = useState([])
+    const [alert, setAlert] = useState({ open: false, id: '', onConfirm: () => { }, onAbort: () => { } })
     const [filters, setFilters] = useState({ title: '', date: '', categories: '' })
-    const deleteFilm = (e, id) => {
-        e.preventDefault()
+    const deleteFilm = (id) => {
+
         Crud.delete(id)
+        const newState = moviesList.filter(movie => movie.id !== id)
+        setMoviesList(newState)
+        onAbort()
+    }
+    const openAlert = (e, id = '') => {
+        e.preventDefault()
+        setAlert({ open: true, onConfirm: () => deleteFilm(id), onAbort })
+    }
+    const onAbort = () => {
+        setAlert({ open: false, id: '', onConfirm: () => { }, onAbort: () => { } })
     }
     const handleChange = (e) => {
         e.preventDefault()
@@ -43,9 +57,10 @@ function Movies() {
 
     return (
         <section className="home">
-            <div className="movie-banner">
+            {alert.open && <Modal onAbort={alert.onAbort} onConfirm={alert.onConfirm} message="Êtes vous sûr de vouloir supprimé ce film" />}
+            <header className="movie-banner">
                 <div className="bg">
-                    <img src={movies.length && movies[0].backdrop} alt="affiche du film"  />
+                    <img src={movies.length ? movies[0].backdrop : POSTER_URL}  />
                 </div>
 
                 <h1 className="title">The Movies Collection</h1>
@@ -70,12 +85,12 @@ function Movies() {
                         </div>
 
                     </div>
-
                 </div>
-            </div>
+                <nav className="nav"> <Link to='/add'><span className="icon-plus"></span></Link></nav>
+            </header>
             <div className="movies">
                 <ul className="movies__list">
-                    {moviesList.map((movie) => <SingleMovie movie={movie} key={movie.id} deleteFilm={deleteFilm} />)}
+                    {moviesList.map((movie) => <SingleMovie movie={movie} key={movie.id} openAlert={openAlert} />)}
                 </ul>
             </div>
         </section>

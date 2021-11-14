@@ -1,6 +1,8 @@
+import Modal from "components/Modal/Modal";
 import Movies from "pages/Movies/Movies";
 import React, { useReducer, useRef, useState } from "react";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { useEffect } from "react/cjs/react.development";
 import Crud from "services/crud";
 import { DEFAULT_MOVIE } from "services/model";
@@ -19,6 +21,50 @@ function AddMovie({ edit = false }) {
     photo: PROFILE_URL,
     character: "",
   });
+  const slider = document.querySelector('.slider')
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  const pointerDown = e => {
+    e.preventDefault()
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  }
+  const pointerLeave = () => {
+    isDown = false;
+    slider.classList.remove('active');
+  }
+  const pointerUp = () => {
+    isDown = false;
+    slider.classList.remove('active');
+  }
+  const pointerMove = (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2
+    slider.scrollLeft = scrollLeft - walk;
+    console.log(x)
+  }
+  useEffect(() => {
+    if (slider) {
+      slider.addEventListener('mousedown', pointerDown)
+      slider.addEventListener('mouseleave', () => pointerLeave);
+      slider.addEventListener('mouseup', pointerUp);
+      slider.addEventListener('mousemove', pointerMove);
+    }
+    return () => {
+      if (slider) {
+        slider.removeEventListener('mousedown', pointerDown)
+        slider.removeEventListener('mouseleave', () => pointerLeave);
+        slider.removeEventListener('mouseup', pointerUp);
+        slider.removeEventListener('mousemove', pointerMove);
+      }
+
+    }
+  }, [slider])
   const [similarMovie, setSimilarMovie] = useState({
     title: "",
     poster: POSTER_URL,
@@ -27,13 +73,13 @@ function AddMovie({ edit = false }) {
   const [categories, setCategories] = useState("");
   const [autoComplete, setAutoComplete] = useState(true);
   const id = useParams().id;
-  const handleChange = (e) => {
+  const handleChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
     setNewMovie({ ...movie, [name]: value });
   };
 
-  const handleChangeSearch = (e) => {
+  const handleChangeSearch = e => {
     e.preventDefault();
     const { value } = e.target;
     setSearch(value);
@@ -42,9 +88,8 @@ function AddMovie({ edit = false }) {
     e.preventDefault();
     setAutoComplete(!autoComplete);
     const imageBaseURL = "https://image.tmdb.org/t/p/original";
-    let URL = `https://api.themoviedb.org/3/movie/${
-      film.id
-    }?api_key=${"4f85342b8749c4d0e6c0f36d0481cbea"}`;
+    let URL = `https://api.themoviedb.org/3/movie/${film.id
+      }?api_key=${"4f85342b8749c4d0e6c0f36d0481cbea"}`;
     const res = await Crud.get(URL);
     const actorsRes = await Crud.get(
       `https://api.themoviedb.org/3/movie/${film.id}/credits?api_key=4f85342b8749c4d0e6c0f36d0481cbea`
@@ -75,7 +120,7 @@ function AddMovie({ edit = false }) {
       poster_path: poster,
       backdrop_path: backdrop,
     } = res;
-    const categories = genres.map((k) => k.name);
+    const categories = genres.map(k => k.name);
     const newMovie = {
       title,
       release_date,
@@ -90,7 +135,7 @@ function AddMovie({ edit = false }) {
   };
 
   const displayResults = async () => {
-    if (search.length < 3) {
+    if (search.length < 2) {
       setResult([]);
       return;
     }
@@ -98,64 +143,75 @@ function AddMovie({ edit = false }) {
       `https://api.themoviedb.org/3/search/movie?api_key=4f85342b8749c4d0e6c0f36d0481cbea&query=${search}&language=fr-FR`
     );
     if (res.results !== undefined) {
-      setResult(res.results);
+      setResult(res.results.splice(0, 10));
     } else {
       setResult(false);
     }
   };
   const input = useRef();
   let timeout = null;
-  const searchDebounce = (e) => {
+  const searchDebounce = e => {
     e.preventDefault();
     clearTimeout(timeout);
     timeout = setTimeout(function () {
       displayResults();
     }, 500);
   };
-  const handleChangeActor = (e) => {
+  const handleChangeActor = e => {
     e.preventDefault();
     const { name, value } = e.target;
     setActor({ ...actor, [name]: value });
   };
-  const handleChangeSimilarMovie = (e) => {
+  const handleChangeSimilarMovie = e => {
     e.preventDefault();
     const { name, value } = e.target;
     setSimilarMovie({ ...similarMovie, [name]: value });
   };
-  const handleChangeCategories = (e) => {
+  const handleChangeCategories = e => {
     e.preventDefault();
     const { value } = e.target;
     setCategories(value);
   };
 
-  const addItem = (e) => {
-    e.preventDefault();
-    const { name: type } = e.target;
-    const state = type === "actors" ? actor : similarMovie;
 
-    setNewMovie({ ...movie, [type]: [...movie[type], state] });
-  };
-  const addCategories = (e) => {
+  const addCategories = e => {
     e.preventDefault();
+
+    if (categories.length <= 0) return
     if (movie.categories.includes(categories.toLowerCase())) return;
-    const { name: type } = e.target;
     setNewMovie({
       ...movie,
-      [type]: [...movie[type], categories.toLowerCase()],
+      categories: [...movie.categories, categories.toLowerCase()],
     });
   };
-  const handleModify = (e) => {
+  const addActor = e => {
     e.preventDefault();
-    console.log("modifier");
+    if (actor.name.length <= 0 || actor.character.length <= 0) return
+    if (movie.actors.filter(_actor => _actor.name === actor.name).length) return;
+    setNewMovie({
+      ...movie,
+      actors: [...movie.actors, actor],
+    });
+  };
+  const addSimilar = e => {
+    e.preventDefault();
+    if (similarMovie.title.length <= 0 || similarMovie.release_date.length <= 0) return
+    if (movie.similar_movies.filter(_similar => similarMovie.title === _similar.title).length) return;
+    setNewMovie({
+      ...movie,
+      similar_movies: [...movie.similar_movies, similarMovie],
+    });
+  };
+  const handleModify = e => {
+    e.preventDefault();
     Crud.put(id, movie);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    console.log("add");
     Crud.post(movie).then(() => (window.location = "/"));
     setNewMovie(DEFAULT_MOVIE);
   };
-  useEffect(() => {}, [movie]);
+  useEffect(() => { }, [movie]);
   useEffect(() => {
     if (edit) {
       (async () => {
@@ -166,27 +222,35 @@ function AddMovie({ edit = false }) {
       })();
     }
   }, [id]);
-  const deleteSimilar = (e, film) => {
-    e.preventDefault();
+  const deleteSimilar = film => {
     const similar_movies = movie.similar_movies.filter(
-      (similar) => similar !== film
+      similar => similar !== film
     );
     setNewMovie({ ...movie, similar_movies });
+    onAbort()
   };
-  const deleteActor = (e, actorDelete) => {
-    e.preventDefault();
-    const actors = movie.actors.filter((actor) => actor !== actorDelete);
+  const deleteActor = actorDelete => {
+    const actors = movie.actors.filter(actor => actor !== actorDelete);
     setNewMovie({ ...movie, actors });
+    onAbort()
   };
+  const onAbort = () => setAlert({ open: false, onConfirm: () => { }, onAbort: () => { }, message: '' })
+  const [alert, setAlert] = useState({ open: false, onConfirm: () => { }, onAbort: onAbort, message: '' })
+  const openAlert = (e, onConfirm) => {
+    e.preventDefault()
+    setAlert({ open: true, onConfirm, onAbort })
+  }
   return (
     <section className="add" onClick={() => setResult([])}>
+      {alert.open && <Modal onAbort={onAbort} onConfirm={alert.onConfirm} message={alert.message} />}
+      <Link to="/movies" className="add__back"><span className="icon-arrow-left2"></span></Link>
       <div className="movie-banner">
         <div className="bg">
           <img src={edit ? movie.backdrop : POSTER_URL} alt="affiche du film" />
         </div>
 
         <h1 className="title">
-          {edit ? "Modifier le film" : "Ajouter un film"}
+          {edit ? movie.title : "Ajouter un film"}
         </h1>
       </div>
       {!edit && (
@@ -195,26 +259,33 @@ function AddMovie({ edit = false }) {
             Utilisez la base de donnée TMDB pour vous aidez à remplir le
             formulaire
           </label>
-          <input
-            type="text"
-            name="title"
-            ref={input}
-            autoComplete="off"
-            id="title"
-            className={`text ${result.length > 0 ? "active" : ""}`}
-            onChange={handleChangeSearch}
-            onKeyUp={searchDebounce}
-            required
-            placeholder="Cherchez directement un film.."
-          />
-          <div className={`result ${result.length > 0 ? "active" : ""}`}>
-            {result.map((film) => (
-              <p onClick={(e) => chooseFilm(e, film)} key={film.id}>
-                {film.title}
-              </p>
-            ))}
+          <div className="autoComplete">
+            <input
+              type="text"
+              name="title"
+              ref={input}
+              autoComplete="off"
+              id="title"
+              className={`text ${result.length > 0 ? "active" : ""}`}
+              onChange={handleChangeSearch}
+              onKeyUp={searchDebounce}
+              required
+              placeholder="Cherchez directement un film.."
+            />
+            <div className={`result ${result.length > 0 ? "active" : ""}`}>
+              {result.map((film) => (
+                <p onClick={(e) => chooseFilm(e, film)} key={film.id}>
+                  {film.title}
+                </p>
+              ))}
+            </div>
           </div>
+
+
           <p className="ou">OU</p>
+          <label htmlFor="title" className="tmdb">
+            Le compléter soi même !
+          </label>
         </div>
       )}
       <form onSubmit={edit ? handleModify : handleSubmit} className="add__form">
@@ -272,8 +343,8 @@ function AddMovie({ edit = false }) {
               onChange={handleChangeCategories}
               value={categories}
             />
-            <button name="categories" onClick={addCategories}>
-              +
+            <button name="categories" className="categories-add" onClick={addCategories}>
+              <span className="icon-plus"></span>
             </button>
           </div>
           <p className="catégories">{movie.categories.join(" , ")}</p>
@@ -314,7 +385,7 @@ function AddMovie({ edit = false }) {
               className="text"
               onChange={handleChangeActor}
             />
-            <button name="actors" onClick={addItem}>
+            <button name="actors" onClick={addActor}>
               Ajouter
             </button>
           </div>
@@ -326,7 +397,7 @@ function AddMovie({ edit = false }) {
                 <p className="actor__character">{actor.character}</p>
                 <button
                   className="actor__delete"
-                  onClick={(e) => deleteActor(e, actor)}
+                  onClick={(e) => openAlert(e, () => deleteActor(actor))}
                 >
                   <span className="icon-delete"></span>
                 </button>
@@ -348,7 +419,7 @@ function AddMovie({ edit = false }) {
               id="title"
               className="text"
               onChange={handleChangeSimilarMovie}
-              required={autoComplete}
+              value={similarMovie.title}
             />
             <label htmlFor="poster" className="add__form__label">
               Affiche :
@@ -359,6 +430,7 @@ function AddMovie({ edit = false }) {
               id="poster"
               className="text"
               onChange={handleChangeSimilarMovie}
+              value={similarMovie.poster}
             />
             <label htmlFor="date" className="add__form__label">
               Date de sortie :
@@ -368,13 +440,14 @@ function AddMovie({ edit = false }) {
               name="release_date"
               id="date"
               onChange={handleChangeSimilarMovie}
-              required={autoComplete}
+              value={similarMovie.release_date}
             />
-            <button name="similar_movies" onClick={addItem}>
+            <button name="similar_movies" onClick={addSimilar}>
               Ajouter
             </button>
           </div>
-          <ul className="similar-movies">
+        </div>
+          <ul className="similar-movies slider">
             {movie.similar_movies.map((film, i) => (
               <li className="film" key={i}>
                 <img src={film.poster} alt="" className="film__picture" />
@@ -382,15 +455,14 @@ function AddMovie({ edit = false }) {
                 <p className="film__date">{film.release_date}</p>
                 <button
                   className="film__delete"
-                  onClick={(e) => deleteSimilar(e, film)}
+                  onClick={(e) => openAlert(e, () => deleteSimilar(film))}
                 >
                   <span className="icon-delete"></span>
                 </button>
               </li>
             ))}
           </ul>
-        </div>
-        <button type="submit">{edit ? "Modifier" : "Ajouter"}</button>
+        <button type="submit" className="submit">{edit ? "Modifier" : "Ajouter"}</button>
       </form>
     </section>
   );

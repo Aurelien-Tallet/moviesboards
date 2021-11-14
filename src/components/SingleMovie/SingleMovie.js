@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './SingleMovie.scss'
 
-function SingleMovie({ movie, deleteFilm }) {
+function SingleMovie({ movie, openAlert }) {
     const { title, poster, description, release_date: date, id, categories } = movie
     return (
         <Link to={`/movies/${id}`} style={{ width: '100%' }}>
@@ -17,7 +17,7 @@ function SingleMovie({ movie, deleteFilm }) {
                 </div>
                 <div className="singlemovie__actions">
                     <button className="singlemovie__actions__edit"><span className="icon-edit" onClick={(e) => window.location = '/edit/' + id}></span></button>
-                    <button className="singlemovie__actions__delete" onClick={(e) => deleteFilm(e, id)}><span className="icon-delete" ></span></button>
+                    <button className="singlemovie__actions__delete" onClick={(e)=> openAlert(e,id)}><span className="icon-delete" ></span></button>
                 </div>
             </article >
         </Link>
