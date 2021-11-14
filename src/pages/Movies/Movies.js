@@ -45,7 +45,7 @@ function Movies() {
         <section className="home">
             <div className="movie-banner">
                 <div className="bg">
-                    <img src={movies.length && movies[0].backdrop} alt="" srcset="" />
+                    <img src={movies.length && movies[0].backdrop} alt="affiche du film"  />
                 </div>
 
                 <h1 className="title">The Movies Collection</h1>

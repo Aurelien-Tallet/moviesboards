@@ -23,8 +23,15 @@ body {
         overflow-x: scroll;
         .film {
             transition: all 0.2s;
-            min-width: 100px;
-            &__picture {
+            min-width: 170px;
+            font-size: 16px;
+            &__date {
+                color:rgb(150, 150, 150);
+                font-size: 14px;
+            }
+            p {
+                text-align: center;
+                width: 100%;
             }
         }
     }
