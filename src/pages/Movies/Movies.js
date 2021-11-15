@@ -40,7 +40,7 @@ function Movies() {
     useEffect(() => {
         if (!movies.length) {
             (async () => {
-                const res = await Crud.get('http://192.168.1.58:4000/movies')
+                const res = await Crud.get('http://192.168.1.58:3000/movies')
                 const arr = []
                 setMovies(res)
                 res.map(film => {
