@@ -11,7 +11,7 @@ class Crud {
         }
     }
     static delete = (id) => {
-        fetch('http://192.168.1.58:3000/movies/' + id, {
+        fetch('http://localhost:3000/movies/' + id, {
             method: 'DELETE',
         })
             .then(res => res.json()).catch((err) => console.log(err))
@@ -20,7 +20,7 @@ class Crud {
     static post = async (data) => {
         const movie = JSON.stringify(data)
         console.log(data)
-        return await fetch('http://192.168.1.58:3000/movies/', {
+        return await fetch('http://localhost:3000/movies/', {
             method: 'POST',
             body: movie,
             headers: {
@@ -32,7 +32,7 @@ class Crud {
     static put = (id, data) => {
         delete data.id
         const movie = JSON.stringify(data)
-        fetch('http://192.168.1.58:3000/movies/' + id, {
+        fetch('http://localhost:3000/movies/' + id, {
             method: 'PUT',
             body: movie,
             headers: {
@@ -41,7 +41,7 @@ class Crud {
             }
         })
             .then(res => res.json()).catch((err) => console.log(err))
-            .then(res => console.log(res))
+            .then(res => window.location = '/')
     }
 }
 export default Crud

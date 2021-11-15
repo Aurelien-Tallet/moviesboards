@@ -54,7 +54,7 @@ function DetailMovie() {
 
     useEffect(() => {
         (async () => {
-            const res = await Crud.get(`http://192.168.1.58:3000/movies/${id}`)
+            const res = await Crud.get(`http://localhost:3000/movies/${id}`)
             setMovie(res)
             setLoading(true)
         })()

@@ -204,7 +204,7 @@ function AddMovie({ edit = false }) {
   };
   const handleModify = e => {
     e.preventDefault();
-    Crud.put(id, movie);
+    Crud.put(id, movie).then(() => (window.location = "/"));
   };
   const handleSubmit = e => {
     e.preventDefault();
@@ -215,7 +215,7 @@ function AddMovie({ edit = false }) {
   useEffect(() => {
     if (edit) {
       (async () => {
-        const res = await Crud.get(`http://192.168.1.58:3000/movies/${id}`);
+        const res = await Crud.get(`http://localhost:3000/movies/${id}`);
         if (!res) return;
         setNewMovie(res);
         setAutoComplete(!autoComplete);

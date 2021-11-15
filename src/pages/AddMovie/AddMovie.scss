@@ -91,6 +91,9 @@
             font-size: 60px;
             z-index: 9999;
             font-family: var(--t-rk);
+            @media (max-width: 599px) {
+                font-size: 30px;
+            }
         }
         &:after {
             content: "";
@@ -136,6 +139,7 @@
             transition: all 0.2s;
             min-width: 170px;
             font-size: 16px;
+            position: relative;
             &__date {
                 color: rgb(150, 150, 150);
                 font-size: 14px;

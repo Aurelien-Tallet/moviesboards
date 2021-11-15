@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 20px;
     &__wrapper {
         display: flex;
         flex-direction: column;
@@ -19,6 +20,9 @@
         p {
             font-family: var(--t-rk);
             font-size: 35px;
+            @media (max-width: 599px) {
+                font-size: 20px;
+            }
         }
         &__btn {
             display: flex;
@@ -28,6 +32,9 @@
                 background: 0;
                 color: var(--primary-white);
                 width: 200px;
+                @media (max-width: 599px) {
+                    width: 120px;
+                }
             }
         }
     }

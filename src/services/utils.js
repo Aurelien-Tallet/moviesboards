@@ -7,7 +7,7 @@ export const containCategories = (movie, value) => !value.length || movie.catego
 
 export const filterArray = (inputArr) => {
     let found = {};
-    let out = inputArr.filter(function (element) {
+    let out = inputArr.filter( element => {
         return found.hasOwnProperty(element) ? false : (found[element] = true);
     });
     return out;

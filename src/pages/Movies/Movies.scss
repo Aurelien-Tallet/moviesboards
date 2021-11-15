@@ -6,7 +6,11 @@
             position: absolute;
             right: 20px;
             top: 20px;
+            font-size: 35px;
             z-index: 99999;
+            @media (max-width: 599px) {
+                font-size: 25px;
+            }
             .icon-plus:hover {
                 color: var(--grey);
             }
